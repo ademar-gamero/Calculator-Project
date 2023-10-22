@@ -8,26 +8,32 @@ This is a homework assignment at University of Wisconsin-Milwaukee.
 ### Focus
 
 What is this homework assignment about?
+**This homework assignment is about creating a function calculuator using a stack and a dynamic array for our data structure**
 
 ### Gather
 
 What do I know?  What do I need to know that's new?
+**I know how a dynamic array works, I need to learn more about stacks though**
 
 ### Brainstorm
 
 What are some ideas for solving this homework assignment?
+**Some ideas I have is creating two seperate stacks one to deal with integers inputed by the user and the other to deal with the operands inputed**
 
 What are existing strengths I can bring to bear to solve the problems?
+**my debugging skills, understanding of dynamic arrays**
 
 What are some new skills I will need to develop?
-
+**understanding of stacks**
 ### Evaluate
 
 What is the best way forward that I can see now?
+**The best way forward is to pass the locked tests, then remove all the compilation errors, then do activity 7 to gain a better understanding of stacks, then work on invariant**
 
 ### Plan
 
 What will I work on first after I finish this planning part?
+**Remove all compilation errors, already passed the locked tests**
 
 *The preceding steps should be completed and committed by the
 Friday 10pm deadline.*
