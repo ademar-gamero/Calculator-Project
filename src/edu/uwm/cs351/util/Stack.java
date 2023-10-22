@@ -21,11 +21,17 @@ public class Stack<T> implements Cloneable {
 	private final Class<T> clazz; // initialize to null if necessary
 	
 	// TODO: Declare fields (for dynamic array data structure)
+	private T[] contents;
+	private int size;
 	
 	private Stack(boolean unused) { clazz = null; } // do not change this constructor
 	
 	// TODO: declare wellFormed
-	
+	private boolean wellFormed() {
+		
+		
+		return true;
+	}
 	// a helper method which you will find useful.
 	@SuppressWarnings("unchecked")
 	private T[] makeArray(int size) {
