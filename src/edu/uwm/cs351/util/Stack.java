@@ -28,8 +28,15 @@ public class Stack<T> implements Cloneable {
 	
 	// TODO: declare wellFormed
 	private boolean wellFormed() {
-		
-		
+		//1. stack can not be intialized to null
+		if(contents == null) return report("stack can not be null");
+		//2. check size
+		if(contents.length == 1) {
+			if (size != 0 && size != 1) {
+			return report("size is not accurate");
+			}
+		}
+		else if (size != contents.length) return report("size is not accurate");
 		return true;
 	}
 	// a helper method which you will find useful.
@@ -51,7 +58,18 @@ public class Stack<T> implements Cloneable {
 	 * it needs to allocate more memory.
 	 */
 	public int getCapacity() {
-		return -1; // TODO
+		return contents.length; // TODO
+	}
+	
+	//constructors
+	public Stack() {
+		this.clazz = null;
+		size = contents.length;
+	}
+	public Stack(int s){
+		this.clazz = null;
+		this.size = s;
+		this.contents = makeArray(s);
 	}
 	
 	// TODO: rest of class
