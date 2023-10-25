@@ -62,14 +62,19 @@ public class Stack<T> implements Cloneable {
 	}
 	
 	//constructors
-	public Stack() {
+	public <T> Stack() {
+		assert wellFormed():"wellformed broken in stack(int s) constructor";
 		this.clazz = null;
 		size = contents.length;
+		assert wellFormed():"wellformed broken in stack(int s) constructor";
 	}
-	public Stack(int s){
-		this.clazz = null;
+	public <T> Stack(int s) {
+		// TODO Auto-generated constructor stub
+		assert wellFormed():"wellformed broken in stack(int s) constructor";
 		this.size = s;
-		this.contents = makeArray(s);
+		this.contents = makeArray(size);
+		this.clazz = null;
+		assert wellFormed():"wellformed broken in stack(int s) constructor";
 	}
 	
 	// TODO: rest of class
@@ -122,5 +127,39 @@ public class Stack<T> implements Cloneable {
 		public boolean wellFormed(Stack<U> s) {
 			return s.wellFormed();
 		}
+	}
+
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Integer peek() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Integer pop() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void push(int i) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void push(Object object) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void clear() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override // required
+	public <T> void clone() {
+		return;
 	}
 }
