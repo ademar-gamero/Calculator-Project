@@ -100,6 +100,7 @@ public class Calculator {
 	 */
 	public long getCurrent() {
 		// TODO implement this
+		return -1;
 	}
 	
 	/**
@@ -113,6 +114,7 @@ public class Calculator {
 	 */
 	public long compute() {
 		// TODO implement this
+		return -1;
 	}
 	
 	/**
