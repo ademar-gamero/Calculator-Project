@@ -72,6 +72,7 @@ public class Stack<T> implements Cloneable {
 		assert wellFormed():"wellformed broken in stack(int s) constructor";
 	}
 	
+	
 	// TODO: rest of class
 	// You need two public constructors: one taking a class value (used by makeArray)
 	// and one without such a value.  In the former case, makeArray
@@ -125,18 +126,26 @@ public class Stack<T> implements Cloneable {
 	}
 
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return size == 0;
 	}
 
 	public Integer peek() {
+		
 		// TODO Auto-generated method stub
-		return null;
+		int peek = -1;
+		for(int i = 0; i < contents.length; i++) {
+			if (contents[i] != null) {
+				peek = (int) contents[i];
+			}
+		}
+		return peek;
 	}
 
 	public Integer pop() {
 		// TODO Auto-generated method stub
-		return null;
+		int pop = (int) contents[contents.length-1];
+		contents[contents.length-1] = null;
+		return pop;
 	}
 
 	public void push(int i) {
@@ -151,6 +160,7 @@ public class Stack<T> implements Cloneable {
 
 	public void clear() {
 		// TODO Auto-generated method stub
+		
 		
 	}
 	@Override // required
