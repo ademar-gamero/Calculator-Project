@@ -72,7 +72,16 @@ public class Stack<T> implements Cloneable {
 		assert wellFormed():"wellformed broken in stack(int s) constructor";
 	}
 	
-	
+	private void ensureCapacity(int minCap) {
+		if (minCap <= contents.length)return;
+		int newSize = contents.length * 2;
+		if(newSize < minCap) newSize = minCap;
+		T[] newArr = makeArray(newSize);
+		for(int i = 0 ; i < size; i++) {
+			newArr[i] = contents[i];
+		}
+		contents = newArr;
+	}
 	// TODO: rest of class
 	// You need two public constructors: one taking a class value (used by makeArray)
 	// and one without such a value.  In the former case, makeArray
@@ -129,33 +138,35 @@ public class Stack<T> implements Cloneable {
 		return size == 0;
 	}
 
-	public Integer peek() {
+	public T peek() {
 		
 		// TODO Auto-generated method stub
-		int peek = -1;
+		T peek = null;
 		for(int i = 0; i < contents.length; i++) {
 			if (contents[i] != null) {
-				peek = (int) contents[i];
+				peek = contents[i];
 			}
 		}
 		return peek;
 	}
 
-	public Integer pop() {
+	public T pop() {
 		// TODO Auto-generated method stub
-		int pop = (int) contents[contents.length-1];
-		contents[contents.length-1] = null;
+		T pop = peek();
+		--size;
 		return pop;
 	}
 
-	public void push(int i) {
-		// TODO Auto-generated method stub
+	public void push(T object) {
 		
-	}
-
-	public void push(Object object) {
 		// TODO Auto-generated method stub
-		
+		if (size < contents.length) {
+			contents[size] = object;
+			++size;
+		}
+		else {
+			
+		}
 	}
 
 	public void clear() {
