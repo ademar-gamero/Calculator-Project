@@ -141,6 +141,7 @@ public class Stack<T> implements Cloneable {
 	public T peek() {
 		
 		// TODO Auto-generated method stub
+		if(size == 0) throw new EmptyStackException();
 		T peek = null;
 		peek = contents[size-1];
 		return peek;
@@ -170,11 +171,29 @@ public class Stack<T> implements Cloneable {
 
 	public void clear() {
 		// TODO Auto-generated method stub
+		while(isEmpty() == false) {
+			pop();	
+		}
 		
 		
 	}
 	@Override // required
 	public Stack<T> clone() {
-		return null;
+		Stack<T> answer;
+		try
+		{
+			answer = (Stack<T>) super.clone();
+		}
+		catch(CloneNotSupportedException e){
+			throw new RuntimeException
+			("This class does not implement cloneable");
+		}
+		answer.contents = makeArray(contents.length);
+		for(int i = 0; i < contents.length;i++) {
+			answer.contents[i] = contents[i];
+		}
+		return answer;
+		
+		
 	}
 }
