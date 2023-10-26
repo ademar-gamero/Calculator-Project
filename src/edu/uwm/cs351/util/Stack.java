@@ -73,7 +73,7 @@ public class Stack<T> implements Cloneable {
 	}
 	
 	private void ensureCapacity(int minCap) {
-		if (minCap <= contents.length)return;
+		if (minCap < contents.length)return;
 		int newSize = contents.length * 2;
 		if(newSize < minCap) newSize = minCap;
 		T[] newArr = makeArray(newSize);
@@ -142,17 +142,14 @@ public class Stack<T> implements Cloneable {
 		
 		// TODO Auto-generated method stub
 		T peek = null;
-		for(int i = 0; i < contents.length; i++) {
-			if (contents[i] != null) {
-				peek = contents[i];
-			}
-		}
+		peek = contents[size-1];
 		return peek;
 	}
 
 	public T pop() {
 		// TODO Auto-generated method stub
 		T pop = peek();
+		contents[size-1] = null;
 		--size;
 		return pop;
 	}
@@ -165,7 +162,9 @@ public class Stack<T> implements Cloneable {
 			++size;
 		}
 		else {
-			
+			ensureCapacity(size);
+			contents[size] = object;
+			++size;
 		}
 	}
 
