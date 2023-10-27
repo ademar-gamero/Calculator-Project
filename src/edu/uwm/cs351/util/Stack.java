@@ -183,6 +183,10 @@ public class Stack<T> implements Cloneable {
 		assert wellFormed():"broken in isEmpty";
 		
 	}
+	public int size() {
+		assert wellFormed():"broken before size";
+		return size;
+	}
 	@Override // required
 	public Stack<T> clone() {
 		assert wellFormed():"broken in isEmpty";

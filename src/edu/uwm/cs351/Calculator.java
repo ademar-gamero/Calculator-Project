@@ -20,11 +20,14 @@ public class Calculator {
 	
 	private long defaultValue;
 	private boolean expectingValue;
-	
+	private int state;
 	/**
 	 * Create a calculator in the "clear" state with "0" as the default value.
 	 */
 	public Calculator() { 
+		defaultValue = 0;
+		expectingValue = false;
+		state = 0;
 		//TODO initialize the fields
 		//	This depends on which design you choose.
 	}
@@ -38,6 +41,15 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void value(long x) {
+		if (state == 0) {
+		operands.push(x);
+		defaultValue = x;
+		state = 1;
+		}
+		if(state == 2) {
+			operands.push(x);
+			defaultValue=x;
+		}
 		// TODO implement this
 	}
 	
@@ -99,8 +111,9 @@ public class Calculator {
 	 * @return current value.
 	 */
 	public long getCurrent() {
+		if (operands.size()==0)return defaultValue;
 		// TODO implement this
-		return -1;
+		return defaultValue;
 	}
 	
 	/**
@@ -114,7 +127,7 @@ public class Calculator {
 	 */
 	public long compute() {
 		// TODO implement this
-		return -1;
+		return defaultValue;
 	}
 	
 	/**
@@ -122,6 +135,9 @@ public class Calculator {
 	 * @post "Clear"
 	 */
 	public void clear() {
+		while(operands.size() != 0) {
+			operands.pop();
+		}
 		// TODO implement this
 	}
 	
