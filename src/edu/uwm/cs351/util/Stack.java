@@ -36,7 +36,8 @@ public class Stack<T> implements Cloneable {
 			return report("size is not accurate");
 			}
 		}
-		else if (size != contents.length) return report("size is not accurate");
+		else if (size > contents.length) return report("size is not accurate");
+		else if (size < 0) return report("size can not be less than zero");
 		return true;
 	}
 	// a helper method which you will find useful.
@@ -135,11 +136,12 @@ public class Stack<T> implements Cloneable {
 	}
 
 	public boolean isEmpty() {
+		assert wellFormed():"broken in isEmpty";
 		return size == 0;
 	}
 
 	public T peek() {
-		
+		assert wellFormed():"broken in isEmpty";
 		// TODO Auto-generated method stub
 		if(size == 0) throw new EmptyStackException();
 		T peek = null;
@@ -148,15 +150,17 @@ public class Stack<T> implements Cloneable {
 	}
 
 	public T pop() {
+		assert wellFormed():"broken in isEmpty";
 		// TODO Auto-generated method stub
 		T pop = peek();
 		contents[size-1] = null;
 		--size;
+		assert wellFormed():"broken in isEmpty";
 		return pop;
 	}
 
 	public void push(T object) {
-		
+		assert wellFormed():"broken in isEmpty";
 		// TODO Auto-generated method stub
 		if (size < contents.length) {
 			contents[size] = object;
@@ -167,18 +171,21 @@ public class Stack<T> implements Cloneable {
 			contents[size] = object;
 			++size;
 		}
+		assert wellFormed():"broken in isEmpty";
 	}
 
 	public void clear() {
 		// TODO Auto-generated method stub
+		assert wellFormed():"broken in isEmpty";
 		while(isEmpty() == false) {
 			pop();	
 		}
-		
+		assert wellFormed():"broken in isEmpty";
 		
 	}
 	@Override // required
 	public Stack<T> clone() {
+		assert wellFormed():"broken in isEmpty";
 		Stack<T> answer;
 		try
 		{
@@ -192,6 +199,7 @@ public class Stack<T> implements Cloneable {
 		for(int i = 0; i < contents.length;i++) {
 			answer.contents[i] = contents[i];
 		}
+		assert wellFormed():"broken in isEmpty";
 		return answer;
 		
 		
