@@ -84,6 +84,13 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void binop(Operation op) {
+	
+		if(op == null)throw new IllegalArgumentException("operation can not be null or parenthesis");
+		if(state == 0||state == 2) throw new IllegalStateException("must be waiting");
+		if(state == 1) {
+			operators.push(op);
+			state = 2;
+		}
 		// TODO implement this
 	}
 
@@ -126,6 +133,16 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public long compute() {
+		if (state == 0||state == 1)return defaultValue;
+	
+		
+		if(state == 2) {
+			Operation op = operators.pop();
+			long val1 = operands.pop();
+			long val2 = operands.pop();
+			defaultValue = op.operate(val1, val2);
+			operands.push(defaultValue);
+		}
 		// TODO implement this
 		return defaultValue;
 	}
@@ -138,6 +155,10 @@ public class Calculator {
 		while(operands.size() != 0) {
 			operands.pop();
 		}
+		while(operators.size() != 0) {
+			operators.pop();
+		}
+		defaultValue = 0;
 		// TODO implement this
 	}
 	
