@@ -104,6 +104,14 @@ public class Calculator {
 	
 		if(op == null)throw new IllegalArgumentException("operation can not be null or parenthesis");
 		if(state == 2) throw new IllegalStateException("must be waiting");
+		Operation original = operators.peek();
+		int ogPre = original.precedence();
+		int opNew = op.precedence();
+		if (ogPre > opNew){
+			state = 3;
+			compute();
+			return;
+		}
 		if(state == 1) {
 			operators.push(op);
 			state = 2;
