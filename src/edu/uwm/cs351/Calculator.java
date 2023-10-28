@@ -31,7 +31,8 @@ public class Calculator {
 		//TODO initialize the fields
 		//	This depends on which design you choose.
 	}
-	
+
+
 	/**
 	 * Enter a value into the calculator.
 	 * The current value is changed to the argument.
@@ -45,10 +46,26 @@ public class Calculator {
 		operands.push(x);
 		defaultValue = x;
 		state = 1;
+		return;
+		}
+		if(state == 1) {
+			operands.push(x);
+			defaultValue = x;
+			state = 2;
+			return;
 		}
 		if(state == 2) {
 			operands.push(x);
 			defaultValue=x;
+			state = 3;
+			return;
+		}
+		if(state == 3) {
+			operands.push(x);
+			defaultValue=x;
+			state = 3;
+			return;
+			
 		}
 		// TODO implement this
 	}
@@ -86,8 +103,16 @@ public class Calculator {
 	public void binop(Operation op) {
 	
 		if(op == null)throw new IllegalArgumentException("operation can not be null or parenthesis");
-		if(state == 0||state == 2) throw new IllegalStateException("must be waiting");
+		if(state == 2) throw new IllegalStateException("must be waiting");
 		if(state == 1) {
+			operators.push(op);
+			state = 2;
+		}
+		if(state == 0) {
+			operators.push(op);
+			state = 1;
+		}
+		if(state == 3) {
 			operators.push(op);
 			state = 2;
 		}
@@ -135,13 +160,22 @@ public class Calculator {
 	public long compute() {
 		if (state == 0||state == 1)return defaultValue;
 	
-		
 		if(state == 2) {
 			Operation op = operators.pop();
 			long val1 = operands.pop();
-			long val2 = operands.pop();
-			defaultValue = op.operate(val1, val2);
+			defaultValue = op.operate(0, val1);
 			operands.push(defaultValue);
+			state = 1;
+		}
+		if(state == 3) {
+			while(operators.size()>0) {
+			Operation op = operators.pop();
+			long val1 = operands.pop();
+			long val2 = operands.pop();
+			defaultValue = op.operate(val2, val1);
+			operands.push(defaultValue);
+			}
+			state = 1;
 		}
 		// TODO implement this
 		return defaultValue;
