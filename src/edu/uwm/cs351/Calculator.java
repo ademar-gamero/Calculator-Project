@@ -77,6 +77,11 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void open() {
+		if(state == 0||state == 3) {
+			Operation lParen = Operation.LPAREN;
+			operators.push(lParen);
+			state = 0;
+		}
 		// TODO implement this
 	}
 	
@@ -89,6 +94,12 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void close() {
+		if (state == 3) {
+			Operation rParen = Operation.RPAREN;
+			operators.push(rParen);
+			state = 3;
+		}
+		compute();
 		// TODO implement this
 	}
 	
@@ -186,11 +197,19 @@ public class Calculator {
 		}
 		if(state == 3) {
 			while(operators.size()>0) {
+			if (operators.peek() == Operation.RPAREN) {
+				operators.pop();
+			}
 			Operation op = operators.pop();
 			long val1 = operands.pop();
 			long val2 = operands.pop();
 			defaultValue = op.operate(val2, val1);
 			operands.push(defaultValue);
+			if(operators.isEmpty() == false) {
+				if(operators.peek() == Operation.LPAREN) {
+					operators.pop();
+					}
+				}
 			}
 			state = 1;
 		}
