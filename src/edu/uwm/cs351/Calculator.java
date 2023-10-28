@@ -77,7 +77,7 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void open() {
-		if(state == 0||state == 3) {
+		if(state == 0||state == 2) {
 			Operation lParen = Operation.LPAREN;
 			operators.push(lParen);
 			state = 0;
@@ -100,6 +100,7 @@ public class Calculator {
 			state = 3;
 		}
 		compute();
+		state = 3;
 		// TODO implement this
 	}
 	
@@ -114,7 +115,7 @@ public class Calculator {
 	public void binop(Operation op) {
 	
 		if(op == null)throw new IllegalArgumentException("operation can not be null or parenthesis");
-		if(state == 2) throw new IllegalStateException("must be waiting");
+		//if(state == 2) throw new IllegalStateException("must be waiting");
 		if(operators.isEmpty() == false) {
 			
 		Operation original = operators.peek();
@@ -132,6 +133,11 @@ public class Calculator {
 		if(state == 1) {
 			operators.push(op);
 			state = 2;
+			return;
+		}
+		if(state == 2) {
+			operators.push(op);
+			state = 3;
 			return;
 		}
 		if(state == 0) {
@@ -189,6 +195,9 @@ public class Calculator {
 		if (state == 0||state == 1)return defaultValue;
 	
 		if(state == 2) {
+			if (operators.isEmpty() == true) {
+				return operands.peek();
+			}
 			Operation op = operators.pop();
 			long val1 = operands.pop();
 			defaultValue = op.operate(0, val1);
@@ -208,6 +217,7 @@ public class Calculator {
 			if(operators.isEmpty() == false) {
 				if(operators.peek() == Operation.LPAREN) {
 					operators.pop();
+					break;
 					}
 				}
 			}
