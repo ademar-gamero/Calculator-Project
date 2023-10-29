@@ -223,6 +223,7 @@ public class Calculator {
 	 */
 	public long compute() {
 		if(state == 2 && operands.isEmpty()==true)throw new IllegalStateException();
+		if(operators.isEmpty()==false && operators.peek().equals(Operation.LPAREN))throw new IllegalStateException();
 		if (state == 0||state == 1)return defaultValue;
 		if(state == 3 && operators.isEmpty())return defaultValue;
 		/*
