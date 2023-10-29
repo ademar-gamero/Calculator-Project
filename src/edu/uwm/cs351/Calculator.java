@@ -1,5 +1,7 @@
 package edu.uwm.cs351;
 
+import java.util.EmptyStackException;
+
 import edu.uwm.cs351.util.IntMath;
 import edu.uwm.cs351.util.Stack;
 
@@ -97,10 +99,22 @@ public class Calculator {
 	 */
 	public void close() {
 		if (state == 0)throw new IllegalStateException("cant close a paren when calc empty");
-		Operation i = operators.peek();
+		if(state == 2 && operators.isEmpty()==false)throw new IllegalStateException("cant close a paren when only elemen is in the calc");
+		Stack<Operation> operatorsC = new Stack<Operation>();
+		boolean parenCheck = false;
+		Operation i;
 		while(operators.isEmpty()==false) {
-			
+			i = operators.pop();
+			if(i == Operation.LPAREN) {
+				parenCheck = true;
+			}
+			operatorsC.push(i);
 		}
+		while(operatorsC.isEmpty()==false) {
+			i = operatorsC.pop();
+			operators.push(i);
+		}
+		if (parenCheck == false)throw new EmptyStackException();
 		if (state == 3) {
 			Operation rParen = Operation.RPAREN;
 			operators.push(rParen);
@@ -122,7 +136,9 @@ public class Calculator {
 	public void binop(Operation op) {
 	
 		if(op == null)throw new IllegalArgumentException("operation can not be null or parenthesis");
-		//if(state == 2) throw new IllegalStateException("must be waiting");
+		if(op == Operation.LPAREN||op == Operation.RPAREN)throw new IllegalArgumentException("cant enter paren with binop");
+		if(state == 0 && operands.isEmpty()==true && operators.isEmpty()==false)throw new IllegalStateException();
+		if(state == 2) throw new IllegalStateException("must be waiting");
 		if(operators.isEmpty() == false) {
 			
 		Operation original = operators.peek();
@@ -142,11 +158,9 @@ public class Calculator {
 			state = 2;
 			return;
 		}
-		if(state == 2) {
-			operators.push(op);
-			state = 3;
-			return;
-		}
+		/*
+		 * if(state == 2) { operators.push(op); state = 3; return; }
+		 */
 		if(state == 0) {
 			operators.push(op);
 			state = 2;
@@ -168,13 +182,15 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void sqrt() {
+		if(state == 2 && operands.isEmpty()==true)throw new IllegalStateException();
+		if(state == 0 && operands.isEmpty()==true && operators.isEmpty()==false)throw new IllegalStateException();
 		if(state == 1||state == 2||state == 3) {
 			long val =  IntMath.isqrt(operands.peek());
 			operands.pop();
 			operands.push(val);
 			defaultValue = val;
 		}
-		state = 2;
+		state = 3;
 		// TODO implement this
 	}
 	
@@ -206,6 +222,7 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public long compute() {
+		if(state == 2 && operands.isEmpty()==true)throw new IllegalStateException();
 		if (state == 0||state == 1)return defaultValue;
 		if(state == 3 && operators.isEmpty())return defaultValue;
 		/*
