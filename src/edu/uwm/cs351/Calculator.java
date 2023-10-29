@@ -42,6 +42,7 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void value(long x) {
+		if(state == 1) throw new IllegalStateException("cant add a val after another");
 		if (state == 0) {
 		operands.push(x);
 		defaultValue = x;
@@ -77,6 +78,7 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void open() {
+		if (state == 1)throw new IllegalStateException("can not add paren");
 		if(state == 0||state == 2) {
 			Operation lParen = Operation.LPAREN;
 			operators.push(lParen);
@@ -94,6 +96,11 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void close() {
+		if (state == 0)throw new IllegalStateException("cant close a paren when calc empty");
+		Operation i = operators.peek();
+		while(operators.isEmpty()==false) {
+			
+		}
 		if (state == 3) {
 			Operation rParen = Operation.RPAREN;
 			operators.push(rParen);
@@ -142,7 +149,7 @@ public class Calculator {
 		}
 		if(state == 0) {
 			operators.push(op);
-			state = 1;
+			state = 2;
 			return;
 		}
 		if(state == 3) {
@@ -161,6 +168,13 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void sqrt() {
+		if(state == 1||state == 2||state == 3) {
+			long val =  IntMath.isqrt(operands.peek());
+			operands.pop();
+			operands.push(val);
+			defaultValue = val;
+		}
+		state = 2;
 		// TODO implement this
 	}
 	
@@ -193,35 +207,60 @@ public class Calculator {
 	 */
 	public long compute() {
 		if (state == 0||state == 1)return defaultValue;
-	
-		if(state == 2) {
-			if (operators.isEmpty() == true) {
-				return operands.peek();
-			}
-			Operation op = operators.pop();
-			long val1 = operands.pop();
-			defaultValue = op.operate(0, val1);
-			operands.push(defaultValue);
-			state = 1;
-		}
+		if(state == 3 && operators.isEmpty())return defaultValue;
+		/*
+		 * if(state == 2) { if (operators.isEmpty() == true) { return operands.peek(); }
+		 * Operation op = operators.pop(); long val1 = operands.pop(); defaultValue =
+		 * op.operate(0, val1); operands.push(defaultValue); state = 1; }
+		 */
 		if(state == 3) {
-			while(operators.size()>0) {
+			boolean cont = true;
 			if (operators.peek() == Operation.RPAREN) {
 				operators.pop();
+				cont = false;
+				while(operators.peek()!= Operation.LPAREN) {
+					Operation op = operators.pop();
+					long val1 = operands.pop();
+					long val2 = operands.pop();
+					defaultValue = op.operate(val2, val1);
+					operands.push(defaultValue);
+				}
+				if(operators.peek() == Operation.LPAREN) {
+					operators.pop();
+					}
+				state = 1;
+				return defaultValue;
+			}
+			while(operators.isEmpty()==false && cont != false) {
+			if (operators.peek() == Operation.RPAREN) {
+				operators.pop();
+				cont = false;
+			}
+			
+			long val1 = operands.pop();
+			if(operands.isEmpty()==true && operators.isEmpty()==true) {
+				defaultValue = val1;
+				operands.push(defaultValue);
+				return defaultValue;
+			}
+			if(operands.isEmpty()==true && operators.isEmpty()==false) {
+				Operation op = operators.pop();
+				defaultValue = op.operate(0, val1);
+				operands.push(defaultValue);
+				state = 1;
+				return defaultValue;
 			}
 			Operation op = operators.pop();
-			long val1 = operands.pop();
 			long val2 = operands.pop();
 			defaultValue = op.operate(val2, val1);
 			operands.push(defaultValue);
 			if(operators.isEmpty() == false) {
 				if(operators.peek() == Operation.LPAREN) {
 					operators.pop();
-					break;
 					}
 				}
 			}
-			state = 1;
+			state = 0;
 		}
 		// TODO implement this
 		return defaultValue;
@@ -232,12 +271,13 @@ public class Calculator {
 	 * @post "Clear"
 	 */
 	public void clear() {
-		while(operands.size() != 0) {
+		while(operands.isEmpty() == false) {
 			operands.pop();
 		}
-		while(operators.size() != 0) {
+		while(operators.isEmpty() == false) {
 			operators.pop();
 		}
+		state = 0;
 		defaultValue = 0;
 		// TODO implement this
 	}
