@@ -199,7 +199,8 @@ public class Calculator {
 //		if(op == null)throw new IllegalArgumentException("operation can not be null or parenthesis");
 		if(op == Operation.LPAREN||op == Operation.RPAREN)throw new IllegalArgumentException("cant enter paren with binop");
 //		if(state == 0 && operands.isEmpty()==true && operators.isEmpty()==false)throw new IllegalStateException();
-		if(state == 2) throw new IllegalStateException("must be waiting");
+		if(state == 2) 
+			throw new IllegalStateException("must be waiting");
 //		
 
 		//new implementation
@@ -209,7 +210,10 @@ public class Calculator {
 			int ogPre = original.precedence();
 			int opNew = op.precedence();
 			if(ogPre > opNew|| ogPre == opNew) {
-				compute();
+				step();
+				if(operators.isEmpty()==false && operators.peek() != Operation.LPAREN) {
+					compute();
+				}
 				operators.push(op);
 				state = 2;
 				return;
@@ -283,6 +287,21 @@ public class Calculator {
 	 * Compute one step.
 	 */
 	private void step() {
+		long val1 = operands.pop();
+		Operation op = operators.pop();
+		if(val1 == 0 && op == Operation.DIVIDE) {
+			clear();
+			throw new ArithmeticException();
+		}
+		if(operands.isEmpty()==true) 
+		{
+			defaultValue = op.operate(0, val1);
+			operands.push(defaultValue);
+			return;
+		}
+		long val2 = operands.pop();
+		defaultValue = op.operate(val2, val1);
+		operands.push(defaultValue);
 		// TODO implement this
 	}
 
@@ -323,7 +342,7 @@ public class Calculator {
 
 		if (state == 1) {
 			
-			// -(-2 cancels out both to return just 2
+			// LPAREN eliminator, removes LPARENS to get compute stuff like -(-3 = 3
 			if(operators.isEmpty()==false && operators.peek() == Operation.LPAREN) {
 				while(operators.isEmpty() != true && operators.peek() == Operation.LPAREN) {
 					operators.pop();
@@ -373,8 +392,9 @@ public class Calculator {
 						state = 0;
 						return defaultValue;
 					}
-					defaultValue = op.operate(0, val1);
-					operands.push(defaultValue);
+					operators.push(op);
+					operands.push(val1);
+					step();
 					state = 0;
 					return defaultValue;
 				}
