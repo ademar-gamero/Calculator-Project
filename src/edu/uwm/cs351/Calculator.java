@@ -46,7 +46,7 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void value(long x) {
-		if (state == 1 )
+		if (state == 1)
 			throw new IllegalStateException("cant add a val after another");
 
 
@@ -94,10 +94,10 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void open() {
-//		if (state == 1)
-//			throw new IllegalStateException("can not add paren");
+		if (state == 1)
+			throw new IllegalStateException("can not add paren");
 		
-		if(state == 0 || state == 1 || state == 2) {
+		if(state == 0 || state == 2) {
 			Operation lParen = Operation.LPAREN;
 			operators.push(lParen);
 			state = 2;
@@ -124,8 +124,8 @@ public class Calculator {
 	public void close() {
 		if (state == 0)
 			throw new IllegalStateException("cant close a paren when calc empty");
-//		if (state == 2 && operators.isEmpty() == false)
-//			throw new IllegalStateException("cant close a paren when only elemen is in the calc");
+		if (state == 2)
+			throw new IllegalStateException("cant close a paren when only elemen is in the calc");
 		
 		//new implementation
 		
@@ -147,6 +147,7 @@ public class Calculator {
 		}		
 		if (parenCheck == false) {
 			compute();
+			state = 1;
 			throw new EmptyStackException();
 		}
 		if(state == 1) {
@@ -196,9 +197,9 @@ public class Calculator {
 	public void binop(Operation op) {
 
 //		if(op == null)throw new IllegalArgumentException("operation can not be null or parenthesis");
-//		if(op == Operation.LPAREN||op == Operation.RPAREN)throw new IllegalArgumentException("cant enter paren with binop");
+		if(op == Operation.LPAREN||op == Operation.RPAREN)throw new IllegalArgumentException("cant enter paren with binop");
 //		if(state == 0 && operands.isEmpty()==true && operators.isEmpty()==false)throw new IllegalStateException();
-//		if(state == 2) throw new IllegalStateException("must be waiting");
+		if(state == 2) throw new IllegalStateException("must be waiting");
 //		
 
 		//new implementation
@@ -254,7 +255,7 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void sqrt() {
-		// if(state == 2 && operands.isEmpty()==true)throw new IllegalStateException();
+		 if(state == 2)throw new IllegalStateException("cant square root a operator");
 		// if(state == 0 && operands.isEmpty()==true && operators.isEmpty()==false)throw
 		// new IllegalStateException();
 
@@ -307,7 +308,7 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public long compute() {
-		// if(state == 2 && operands.isEmpty()==true)throw new IllegalStateException();
+		 if(state == 2)throw new IllegalStateException("no operands to compute only operators");
 		// if(operators.isEmpty()==false &&
 		// operators.peek().equals(Operation.LPAREN))throw new IllegalStateException();
 		// if (state == 0||state == 1)return defaultValue;
