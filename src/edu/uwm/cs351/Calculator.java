@@ -46,14 +46,10 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void value(long x) {
-//		if (state == 1)
-//			throw new IllegalStateException("cant add a val after another");
+		if (state == 1 )
+			throw new IllegalStateException("cant add a val after another");
 
-		if(state == 1) {
-			operands.push(x);
-			defaultValue = x;
-			state = 1;			
-		}
+
 		if(state == 0 || state == 2) {
 			operands.push(x);
 			defaultValue = x;
@@ -126,8 +122,8 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void close() {
-//		if (state == 0)
-//			throw new IllegalStateException("cant close a paren when calc empty");
+		if (state == 0)
+			throw new IllegalStateException("cant close a paren when calc empty");
 //		if (state == 2 && operators.isEmpty() == false)
 //			throw new IllegalStateException("cant close a paren when only elemen is in the calc");
 		
@@ -149,9 +145,10 @@ public class Calculator {
 			i = operatorsC.pop();
 			operators.push(i);
 		}		
-		if (parenCheck == false)
-		throw new EmptyStackException();
-		
+		if (parenCheck == false) {
+			compute();
+			throw new EmptyStackException();
+		}
 		if(state == 1) {
 			Operation rParen = Operation.RPAREN;
 			operators.push(rParen);
@@ -262,12 +259,14 @@ public class Calculator {
 		// new IllegalStateException();
 
 		// new implementation
-		if (state == 1) {
-
-			long val = IntMath.isqrt(operands.peek());
+		if (state == 0 || state == 1) {
+			
+			long val = IntMath.isqrt(defaultValue);
+			if (defaultValue != 0) {
 			operands.pop();
 			operands.push(val);
 			defaultValue = val;
+			}
 		}
 		state = 1;
 		// orignal implementation
@@ -372,7 +371,7 @@ public class Calculator {
 				}
 			}
 
-			state = 1;
+			state = 0;
 		}
 	
 
