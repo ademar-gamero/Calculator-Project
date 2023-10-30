@@ -202,6 +202,7 @@ public class Calculator {
 
 		//new implementation
 		if(state == 0 || state == 1) {
+			if (operators.isEmpty() == false) {
 			Operation original = operators.peek();
 			int ogPre = original.precedence();
 			int opNew = op.precedence();
@@ -210,11 +211,10 @@ public class Calculator {
 				operators.push(op);
 				state = 2;
 				return;
+				}
 			}
-			else {
-				operators.push(original);
-				state = 2;
-			}
+			operators.push(op);
+			state = 2;
 			
 			
 		}
@@ -319,7 +319,7 @@ public class Calculator {
 
 		if (state == 1) {
 			boolean cont = true;
-			if (operators.peek() == Operation.RPAREN) {
+			if (operators.isEmpty()==false && operators.peek() == Operation.RPAREN) {
 				operators.pop();
 				cont = false;
 				while (operators.peek() != Operation.LPAREN) {
