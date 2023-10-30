@@ -48,14 +48,18 @@ public class Calculator {
 	public void value(long x) {
 //		if (state == 1)
 //			throw new IllegalStateException("cant add a val after another");
-		
+
+		if(state == 1) {
+			operands.push(x);
+			defaultValue = x;
+			state = 1;			
+		}
 		if(state == 0 || state == 2) {
 			operands.push(x);
 			defaultValue = x;
 			state = 1;
-			return;
 		}
-		
+
 		
 		//old implementation
 //		if (state == 0) {
@@ -97,10 +101,10 @@ public class Calculator {
 //		if (state == 1)
 //			throw new IllegalStateException("can not add paren");
 		
-		if(state == 0 || state == 1) {
+		if(state == 0 || state == 1 || state == 2) {
 			Operation lParen = Operation.LPAREN;
 			operators.push(lParen);
-			state = 1;
+			state = 2;
 		}
 		
 		//original implementation
@@ -140,6 +144,7 @@ public class Calculator {
 			}
 			operatorsC.push(i);
 		}
+			
 		while (operatorsC.isEmpty() == false) {
 			i = operatorsC.pop();
 			operators.push(i);
@@ -147,12 +152,11 @@ public class Calculator {
 		if (parenCheck == false)
 		throw new EmptyStackException();
 		
-		if(state == 2) {
+		if(state == 1) {
 			Operation rParen = Operation.RPAREN;
 			operators.push(rParen);
 		} 
 		compute();
-		state = 2;
 		
 		//original implementation
 //		Stack<Operation> operatorsC = new Stack<Operation>();
@@ -202,7 +206,7 @@ public class Calculator {
 
 		//new implementation
 		if(state == 0 || state == 1) {
-			if (operators.isEmpty() == false) {
+			if (operators.isEmpty() == false && operators.peek() != Operation.LPAREN) {
 			Operation original = operators.peek();
 			int ogPre = original.precedence();
 			int opNew = op.precedence();
@@ -265,7 +269,7 @@ public class Calculator {
 			operands.push(val);
 			defaultValue = val;
 		}
-		state = 2;
+		state = 1;
 		// orignal implementation
 		/*
 		 * if(state == 1||state == 2||state == 3) { long val =
@@ -335,6 +339,9 @@ public class Calculator {
 				state = 1;
 				return defaultValue;
 			}
+			
+			
+			
 			while (operators.isEmpty() == false) {
 				if (operators.peek() == Operation.RPAREN) {
 					operators.pop();
@@ -364,7 +371,8 @@ public class Calculator {
 					}
 				}
 			}
-			state = 0;
+
+			state = 1;
 		}
 	
 
