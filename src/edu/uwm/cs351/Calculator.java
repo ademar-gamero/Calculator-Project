@@ -263,7 +263,7 @@ public class Calculator {
 		if (state == 0 || state == 1) {
 			
 			long val = IntMath.isqrt(defaultValue);
-			if (defaultValue != 0) {
+			if (defaultValue != 0 && operands.isEmpty() == false ) {
 			operands.pop();
 			operands.push(val);
 			defaultValue = val;
@@ -322,6 +322,18 @@ public class Calculator {
 		// correct implementation? just 0,1,2
 
 		if (state == 1) {
+			
+			// -(-2 cancels out both to return just 2
+			if(operators.isEmpty()==false && operators.peek() == Operation.LPAREN) {
+				while(operators.isEmpty() != true && operators.peek() == Operation.LPAREN) {
+					operators.pop();
+				}
+				compute();
+				state = 0;
+				return defaultValue;
+				
+			}
+			
 			boolean cont = true;
 			if (operators.isEmpty()==false && operators.peek() == Operation.RPAREN) {
 				operators.pop();
@@ -356,9 +368,14 @@ public class Calculator {
 				// special case where one - , 5 in stack
 				if (operands.isEmpty() == true && operators.isEmpty() == false) {
 					Operation op = operators.pop();
+					if (op == Operation.LPAREN) {
+						defaultValue = val1;
+						state = 0;
+						return defaultValue;
+					}
 					defaultValue = op.operate(0, val1);
 					operands.push(defaultValue);
-					state = 1;
+					state = 0;
 					return defaultValue;
 				}
 				Operation op = operators.pop();
