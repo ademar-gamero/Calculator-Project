@@ -22,7 +22,6 @@ public class Calculator {
 	private Stack<Operation> operators = new Stack<Operation>();
 
 	private long defaultValue;
-	private boolean expectingValue;
 	private int state;
 
 	/**
@@ -30,7 +29,6 @@ public class Calculator {
 	 */
 	public Calculator() {
 		defaultValue = 0;
-		expectingValue = false;
 		state = 0;
 		// TODO initialize the fields
 		// This depends on which design you choose.
@@ -56,33 +54,7 @@ public class Calculator {
 			state = 1;
 		}
 
-		
-		//old implementation
-//		if (state == 0) {
-//			operands.push(x);
-//			defaultValue = x;
-//			state = 1;
-//			return;
-//		}
-//		if (state == 1) {
-//			operands.push(x);
-//			defaultValue = x;
-//			state = 2;
-//			return;
-//		}
-//		if (state == 2) {
-//			operands.push(x);
-//			defaultValue = x;
-//			state = 3;
-//			return;
-//		}
-//		if (state == 3) {
-//			operands.push(x);
-//			defaultValue = x;
-//			state = 3;
-//			return;
-//
-//		}
+
 		// TODO implement this
 	}
 
@@ -103,13 +75,6 @@ public class Calculator {
 			state = 2;
 		}
 		
-		//original implementation
-//		if (state == 0 || state == 2) {
-//			Operation lParen = Operation.LPAREN;
-//			operators.push(lParen);
-//			state = 0;
-//		}
-		// TODO implement this
 	}
 
 	/**
@@ -150,37 +115,14 @@ public class Calculator {
 			state = 1;
 			throw new EmptyStackException();
 		}
+		
+		//pushing of RPAREN
 		if(state == 1) {
 			Operation rParen = Operation.RPAREN;
 			operators.push(rParen);
 		} 
 		compute();
-		
-		//original implementation
-//		Stack<Operation> operatorsC = new Stack<Operation>();
-//		boolean parenCheck = false;
-//		Operation i;
-//		while (operators.isEmpty() == false) {
-//			i = operators.pop();
-//			if (i == Operation.LPAREN) {
-//				parenCheck = true;
-//			}
-//			operatorsC.push(i);
-//		}
-//		while (operatorsC.isEmpty() == false) {
-//			i = operatorsC.pop();
-//			operators.push(i);
-//		}
-//		if (parenCheck == false)
-//			throw new EmptyStackException();
-//		if (state == 3) {
-//			Operation rParen = Operation.RPAREN;
-//			operators.push(rParen);
-//			state = 3;
-//		}
-//		compute();
-//		state = 3;
-		// TODO implement this
+
 	}
 
 	/**
@@ -195,13 +137,10 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void binop(Operation op) {
-
-//		if(op == null)throw new IllegalArgumentException("operation can not be null or parenthesis");
+		//Exception checks
 		if(op == Operation.LPAREN||op == Operation.RPAREN)throw new IllegalArgumentException("cant enter paren with binop");
-//		if(state == 0 && operands.isEmpty()==true && operators.isEmpty()==false)throw new IllegalStateException();
 		if(state == 2) 
 			throw new IllegalStateException("must be waiting");
-//		
 
 		//new implementation
 		if(state == 0 || state == 1) {
@@ -225,29 +164,6 @@ public class Calculator {
 			
 		}
 		
-		//original implementation
-		/*
-		 * if(operators.isEmpty() == false) {
-		 * 
-		 * Operation original = operators.peek(); 
-		 * int ogPre = original.precedence(); 
-		 * int opNew = op.precedence();
-		 * if (ogPre > opNew || ogPre == opNew)
-		 * { 
-		 * 	state = 3;
-		 * 
-		 * 	compute(); operators.push(op); state = 2; return; 
-		 * } 
-		 * }
-		 * 
-		 * if(state == 1) { operators.push(op); state = 2; return; }
-		 * 
-		 * if(state == 2) { operators.push(op); state = 3; return; }
-		 * 
-		 * if(state == 0) { operators.push(op); state = 2; return; } if(state == 3) {
-		 * operators.push(op); state = 2; return; }
-		 */
-		// TODO implement this
 	}
 
 	/**
@@ -259,9 +175,8 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public void sqrt() {
+		//Exception
 		 if(state == 2)throw new IllegalStateException("cant square root a operator");
-		// if(state == 0 && operands.isEmpty()==true && operators.isEmpty()==false)throw
-		// new IllegalStateException();
 
 		// new implementation
 		if (state == 0 || state == 1) {
@@ -274,13 +189,6 @@ public class Calculator {
 			}
 		}
 		state = 1;
-		// orignal implementation
-		/*
-		 * if(state == 1||state == 2||state == 3) { long val =
-		 * IntMath.isqrt(operands.peek()); operands.pop(); operands.push(val);
-		 * defaultValue = val; } state = 3;
-		 */
-		// TODO implement this
 	}
 
 	/**
@@ -327,20 +235,10 @@ public class Calculator {
 	 * @exception IllegalStateException if precondition not met
 	 */
 	public long compute() {
+		//exception check
 		 if(state == 2)throw new IllegalStateException("no operands to compute only operators");
-		// if(operators.isEmpty()==false &&
-		// operators.peek().equals(Operation.LPAREN))throw new IllegalStateException();
-		// if (state == 0||state == 1)return defaultValue;
-		// if(state == 3 && operators.isEmpty())return defaultValue;
-		/*
-		 * if(state == 2) { if (operators.isEmpty() == true) { return operands.peek(); }
-		 * Operation op = operators.pop(); long val1 = operands.pop(); defaultValue =
-		 * op.operate(0, val1); operands.push(defaultValue); state = 1; }
-		 */
-
-		// correct implementation? just 0,1,2
-
-		if (state == 1) {
+		 
+		 if (state == 1) {
 			
 			// LPAREN eliminator, removes LPARENS to get compute stuff like -(-3 = 3
 			if(operators.isEmpty()==false && operators.peek() == Operation.LPAREN) {
@@ -412,58 +310,6 @@ public class Calculator {
 			state = 0;
 		}
 	
-
-//orginal implementation	
-//		if(state == 3) {
-//			boolean cont = true;
-//			if (operators.peek() == Operation.RPAREN) {
-//				operators.pop();
-//				cont = false;
-//				while(operators.peek()!= Operation.LPAREN) {
-//					Operation op = operators.pop();
-//					long val1 = operands.pop();
-//					long val2 = operands.pop();
-//					defaultValue = op.operate(val2, val1);
-//					operands.push(defaultValue);
-//				}
-//				if(operators.peek() == Operation.LPAREN) {
-//					operators.pop();
-//					}
-//				state = 1;
-//				return defaultValue;
-//			}
-//			while(operators.isEmpty()==false && cont != false) {
-//			if (operators.peek() == Operation.RPAREN) {
-//				operators.pop();
-//				cont = false;
-//			}
-//			
-//			long val1 = operands.pop();
-//			if(operands.isEmpty()==true && operators.isEmpty()==true) {
-//				defaultValue = val1;
-//				operands.push(defaultValue);
-//				return defaultValue;
-//			}
-//			if(operands.isEmpty()==true && operators.isEmpty()==false) {
-//				Operation op = operators.pop();
-//				defaultValue = op.operate(0, val1);
-//				operands.push(defaultValue);
-//				state = 1;
-//				return defaultValue;
-//			}
-//			Operation op = operators.pop();
-//			long val2 = operands.pop();
-//			defaultValue = op.operate(val2, val1);
-//			operands.push(defaultValue);
-//			if(operators.isEmpty() == false) {
-//				if(operators.peek() == Operation.LPAREN) {
-//					operators.pop();
-//					}
-//				}
-//			}
-//			state = 0;
-//		}
-
 	// TODO implement this
 	return defaultValue;
 
