@@ -63,10 +63,10 @@ public class Stack<T> implements Cloneable {
 	}
 	
 	//constructors
-	public <T> Stack() {
+	public Stack() {
 		this(null);
 	}
-	public <T> Stack(Class c) {
+	public Stack(Class<T> c) {
 		// TODO Auto-generated constructor stub
 		this.contents = makeArray(DEFAULT_CAPACITY);
 		this.clazz = c;
@@ -187,6 +187,7 @@ public class Stack<T> implements Cloneable {
 		assert wellFormed():"broken before size";
 		return size;
 	}
+	@SuppressWarnings("unchecked")
 	@Override // required
 	public Stack<T> clone() {
 		assert wellFormed():"broken in isEmpty";

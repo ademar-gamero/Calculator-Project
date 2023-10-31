@@ -251,10 +251,10 @@ public class Calculator {
 				
 			}
 			
-			boolean cont = true;
+			
 			if (operators.isEmpty()==false && operators.peek() == Operation.RPAREN) {
 				operators.pop();
-				cont = false;
+				
 				while (operators.peek() != Operation.LPAREN) {
 					Operation op = operators.pop();
 					long val1 = operands.pop();
