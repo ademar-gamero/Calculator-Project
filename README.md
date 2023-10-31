@@ -43,15 +43,16 @@ Friday 10pm deadline.*
 ### Review
 
 Did I correctly anticipate the difficulties?
+**yes I knew I was going to struggle most with the calulator aspect part of this homework assingment**
 
 How did the plan go?
-
+**the plan went alright, I was able to crank out all the locked tests and compilations errors then move on to the invariant**
 ### Preview
 
 What should I do differently for next week's homework assignment?
-
+**go to tutoring again but twice during the week instead of once and make sure I attend class in person**
 Do I need more resources?
-
+**no**
 ## Comments (optional)
 
 Here are my comments on the assignment to the course instructors:
