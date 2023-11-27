@@ -17,7 +17,7 @@ import edu.uwm.cs351.util.Stack;
  * At any point if a division by zero is caused, the appropriate exception is
  * raised.
  */
-public class Calculator {
+public class Calc {
 	private Stack<Long> operands = new Stack<Long>();
 	private Stack<Operation> operators = new Stack<Operation>();
 
@@ -27,7 +27,7 @@ public class Calculator {
 	/**
 	 * Create a calculator in the "clear" state with "0" as the default value.
 	 */
-	public Calculator() {
+	public Calc() {
 		defaultValue = 0;
 		state = 0;
 		// TODO initialize the fields
@@ -43,7 +43,7 @@ public class Calculator {
 	 * @param x value to enter
 	 * @exception IllegalStateException if precondition not met
 	 */
-	public void value(long x) {
+	public void val(long x) {
 		if (state == 1)
 			throw new IllegalStateException("cant add a val after another");
 
