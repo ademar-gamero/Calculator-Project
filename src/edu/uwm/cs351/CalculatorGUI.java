@@ -37,7 +37,7 @@ public class CalculatorGUI extends JFrame {
 	private static final int FONT_SIZE = 20;
 	
 	public CalculatorGUI() {
-		super("Hexidecimal Calculator");
+		super("Hexidecimal Calc");
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(new BorderLayout());
 		JPanel buttonPane = new JPanel();
@@ -92,13 +92,13 @@ public class CalculatorGUI extends JFrame {
 	
 	private Font myFont = new Font("Monospaced",Font.BOLD,20);
 	
-	private Calculator calculator = new Calculator();
+	private Calc Calc = new Calc();
 	private StringBuilder builder = new StringBuilder();
 	
 	private void handleBuilder() {
 		if (builder.length() > 0) {
 			long result = Long.parseLong(builder.toString(), 16);
-			calculator.value(result);
+			Calc.val(result);
 			builder.setLength(0);
 			resultPane.repaint();
 		}
@@ -123,7 +123,7 @@ public class CalculatorGUI extends JFrame {
 	
 
 	private long getResult() {
-		return calculator.getCurrent();
+		return Calc.getCurrent();
 	}
 	
 	private ResultPane resultPane;
@@ -154,7 +154,7 @@ public class CalculatorGUI extends JFrame {
 	private class ClearListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {
 			builder.setLength(0);
-			calculator.clear();
+			Calc.clear();
 			resultPane.repaint();
 		}
 	}
@@ -163,7 +163,7 @@ public class CalculatorGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			try {
 				handleBuilder();
-				calculator.sqrt();
+				Calc.sqrt();
 			} catch (RuntimeException ex) {
 				handleException(ex);
 			}
@@ -176,7 +176,7 @@ public class CalculatorGUI extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			try {
 				handleBuilder();
-				calculator.compute();
+				Calc.compute();
 			} catch (RuntimeException ex) {
 				handleException(ex);
 			}
@@ -212,13 +212,13 @@ public class CalculatorGUI extends JFrame {
 				handleBuilder();
 				switch (op) {
 				case LPAREN:
-					calculator.open();
+					Calc.open();
 					break;
 				case RPAREN:
-					calculator.close();
+					Calc.close();
 					break;
 				default:
-					calculator.binop(op);
+					Calc.binop(op);
 					break;
 				}
 			} catch (RuntimeException ex) {
